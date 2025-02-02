@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OSPRO</title>
+    <link rel="icon" type="image/x-icon" href="OSPROlogo.png">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: white;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding-top: 80px; /* Add padding to account for the fixed header */
+        }
+        a{
+            text-decoration: none;
+            color:#6b47c7 ;
+        }
+        /* Header Styles */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 10%;
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            width: 100%; /* Ensure it spans the full width */
+            position: fixed; /* Fix the header at the top */
+            top: 0; /* Fix the header at the top */
+            z-index: 1000; /* Ensure it stays above other content */
+        }
+        .brand-logo a {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            text-decoration: none;
+        }
+        .brand-logo img {
+            width: 100px; /* Fixed width for the logo */
+            height: auto; /* Maintain aspect ratio */
+        }
+        .menu-list {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+        }
+        .menu-list li {
+            margin: 0 15px;
+        }
+        .menu-list a {
+            text-decoration: none;
+            color: #333;
+            font-size: 16px;
+            transition: color 0.3s ease;
+        }
+        .menu-list a:hover {
+            color: #8A56E7;
+        }
+        .action-btn {
+            padding: 10px 20px;
+            background-color: #8A56E7;
+            color: #ffffff;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+        .action-btn:hover {
+            background-color: #8A56E7;
+        }
+        .login {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .login input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .login button {
+            padding: 10px 20px;
+            background-color: #8A56E7;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .login button:hover {
+            background-color: #8A56E7;
+        }
+        .nav {
+            margin-bottom: 20px;
+        }
+        .nav a {
+            margin: 0 10px;
+            text-decoration: none;
+            color: #8A56E7;
+        }
+        .nav a:hover {
+            text-decoration: underline;
+        }
+        .floor {
+            margin-bottom: 20px;
+        }
+        .floor div {
+            margin: 5px 0;
+        }
+        .schedule {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .schedule button {
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .schedule button:hover {
+            background-color: #218838;
+        }
+        .policy {
+            margin-top: 20px;
+            font-size: 12px;
+            color: #666;
+        }
+        img {
+            transition: transform 0.5s ease;
+        }
+        img:hover {
+            transform: scale(1.1);
+        }
+        .container {
+            display: flex;
+            gap: 20px;
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            opacity: 0; /* Initially hidden */
+            transform: translateY(50px); /* Start from below */
+            transition: opacity 0.6s ease, transform 0.6s ease; /* Slide-in effect */
+        }
+        .container.visible {
+            opacity: 1; /* Make it visible */
+            transform: translateY(0); /* Slide into position */
+        }
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 150px;
+            transition: transform 0.3s ease-in-out;
+        }
+        .card:hover {
+            transform: scale(1.1);
+        }
+        .card h4 {
+            margin: 0;
+            color: gray;
+            font-size: 14px;
+        }
+        .card h2 {
+            margin: 10px 0;
+            font-size: 24px;
+        }
+        .card button {
+            background: black;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .card button:hover {
+            background: #333;
+        }
+        .footer {
+            margin-top: auto;
+            padding: 20px;
+            text-align: center;
+            background-color: white;
+            border-top: 1px solid #ccc;
+        }
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #001f3f;
+        }
+        .logo img {
+            width: 24px;
+            height: 24px;
+        }
+        .footer-nav-links {
+            margin-top: 10px;
+        }
+        .footer-nav-links a {
+            margin: 0 10px;
+            text-decoration: none;
+            color: #001f3f;
+            font-weight: bold;
+        }
+        .footer-links {
+            margin-top: 10px;
+            color: #444;
+        }
+        .footer-links a {
+            margin: 0 10px;
+            text-decoration: none;
+            color: #444;
+        }
+        .social-icons {
+            margin-top: 10px;
+        }
+        .social-icons a {
+            margin: 0 5px;
+            text-decoration: none;
+            font-size: 18px;
+            color: #6b47c7;
+        }
+        .made-in {
+            margin-top: 10px;
+            background: white;
+            padding: 5px 10px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            font-size: 14px;
+            display: inline-block;
+        }
+        
+    </style>
+</head>
+<body>
+    <header class="top-bar">
+        <div class="brand-logo">
+            <img src="img_logo.png" alt="OSPRO Logo" style="width: 150px; height: 100; margin-left: 20px;">
+        </div>
+        <nav class="main-nav">
+            <ul class="menu-list">
+                <li><a href="welcome.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="contactus.html">Contact</a></li>
+                <li><a href="transfer.html">Transfer Authority</a></li>
+                <li><a href="trial.html">Schedule</a></li>
+            </ul>
+        </nav>
+        <div class="cta-container" style="margin-right: 15px;">
+            <a href="#" class="action-btn">Get Started</a>
+        </div>
+    </header>
+    <img src="floor.png" alt="Floor Plan" width="60%" style="padding: 10px; margin-top: 40px;">
+    <br>
+    <br>
+    <div class="container">
+        <div class="card">
+            <h4>SEAT</h4>
+            <h2>A1</h2>
+            <a type="button" href="book.html">BOOK NOW</a>
+        </div>
+        <div class="card">
+            <h4>SEAT</h4>
+            <h2>A2</h2>
+            <a type="button" href="book.html">BOOK NOW</a>
+        </div>
+        <div class="card">
+            <h4>SEAT</h4>
+            <h2>A3</h2>
+            <a type="button" href="book.html">BOOK NOW</a>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="card">
+            <h4>SEAT</h4>
+            <h2>B1</h2>
+            <a type="button" href="book.html">BOOK NOW</a>
+        </div>
+        <div class="card">
+            <h4>SEAT</h4>
+            <h2>B2</h2>
+            <a type="button" href="book.html">BOOK NOW</a>
+        </div>
+        <div class="card">
+            <h4>SEAT</h4>
+            <h2>B3</h2>
+            <a type="button" href="book.html">BOOK NOW</a>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="card">
+            <h4>SEAT</h4>
+            <h2>C1</h2>
+            <a type="button" href="book.html">BOOK NOW</a>
+        </div>
+        <div class="card">
+            <h4>SEAT</h4>
+            <h2>C2</h2>
+            <a type="button" href="book.html">BOOK NOW</a>
+        </div>
+        <div class="card">
+            <h4>SEAT</h4>
+            <h2>C3</h2>
+            <a type="button" href="book.html">BOOK NOW</a>
+        </div>
+    </div>
+        
+    </body>
+    </div>
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="logo">
+                <img src="OSPROlogo.png" alt="Logo">
+                <span>OSPRO</span>
+            </div>
+            <div class="footer-nav-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Use</a>
+                <a href="#">About</a>
+            </div>
+            <div class="footer-links">
+                <a href="#">Facebook</a>
+                <a href="#">Twitter</a>
+                <a href="#">LinkedIn</a>
+            </div>
+            <div class="social-icons">
+                <a href="#">LinkedIn</a>
+                <a href="#">Facebook</a>
+                <a href="#">Twitter</a>
+            </div>
+            <div class="made-in">
+                Made in India
+            </div>
+        </div>
+    </footer>
+    <script>
+        window.addEventListener('scroll', function () {
+            const containers = document.querySelectorAll('.container');
+            containers.forEach(function (container) {
+                const containerPosition = container.getBoundingClientRect().top;
+                if (containerPosition <= window.innerHeight * 0.75) {
+                    container.classList.add('visible');
+                } else {
+                    container.classList.remove('visible');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

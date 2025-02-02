@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendar</title>
+    <link rel="icon" type="image/x-icon" href="OSPROlogo.png">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+            flex-direction: column;
+        }
+        .calendar {
+            width: 350px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .calendar-days {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+            margin-top: 10px;
+        }
+        .day {
+            padding: 10px;
+            background: #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .day:hover {
+            background: #8A56E7;
+        }
+        .today {
+            background: #8A56E7;
+            color: white;
+        }
+        .selected {
+            background: #4CAF50;
+            color: white;
+        }
+        .time-selector {
+            display: none;
+            margin-top: 20px;
+            background: white;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .confirmation {
+            display: none;
+            margin-top: 20px;
+            background: white;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            color: green;
+            font-weight: bold;
+        }
+        .nav {
+            margin-bottom: 20px;
+        }
+        .nav a {
+            margin: 0 10px;
+            text-decoration: none;
+            color: #8A56E7;
+        }
+        .nav a:hover {
+            text-decoration: underline;
+        }
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 10%;
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            width: 100%; /* Ensure it spans the full width */
+            position: fixed; /* Fix the header at the top */
+            top: 0; /* Fix the header at the top */
+            z-index: 1000; /* Ensure it stays above other content */
+        }
+        .brand-logo a {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            text-decoration: none;
+        }
+        .brand-logo img {
+            width: 100px; /* Fixed width for the logo */
+            height: auto; /* Maintain aspect ratio */
+        }
+        .menu-list {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+        }
+        .menu-list li {
+            margin: 0 15px;
+        }
+        .menu-list a {
+            text-decoration: none;
+            color: #333;
+            font-size: 16px;
+            transition: color 0.3s ease;
+        }
+        .menu-list a:hover {
+            color: #8A56E7;
+        }
+        .container {
+            display: flex;
+            gap: 20px;
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            opacity: 0; /* Initially hidden */
+            transform: translateY(50px); /* Start from below */
+            transition: opacity 0.6s ease, transform 0.6s ease; /* Slide-in effect */
+        }
+        .container.visible {
+            opacity: 1; /* Make it visible */
+            transform: translateY(0); /* Slide into position */
+        }
+        .action-btn {
+            padding: 10px 20px;
+            background-color: #8A56E7;
+            color: #ffffff;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+        .action-btn:hover {
+            background-color: #8A56E7;
+        }
+    </style>
+</head>
+<body>
+    <header class="top-bar">
+        <div class="brand-logo">
+            <img src="img_logo.png" alt="OSPRO Logo" style="width: 150px; height: 100; margin-left: 20px;">
+        </div>
+        <nav class="main-nav">
+            <ul class="menu-list">
+                <li><a href="welcome.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="contactus.html">Contact</a></li>
+                <li><a href="transfer.html">Transfer Authority</a></li>
+                <li><a href="trial.html">Schedule</a></li>
+            </ul>
+        </nav>
+        <div class="cta-container" style="margin-right: 15px;">
+            <a href="#" class="action-btn">Get Started</a>
+        </div>
+    </header>
+    <div class="main-container">
+        <div class="calendar-container">
+            <h1>Schedule a meeting</h1>
+            <div class="calendar">
+                <div class="calendar-header">
+                    <button onclick="prevMonth()">&#9665;</button>
+                    <h2 id="month-year"></h2>
+                    <button onclick="nextMonth()">&#9655;</button>
+                </div>
+                <div class="calendar-days" id="calendar-days"></div>
+            </div>
+            <div class="time-selector" id="time-selector">
+                <h3 id="selected-date"></h3>
+                <label for="time">Select Time:</label>
+                <input type="time" id="time">
+                <label for="name">Enter your Name:</label>
+                <input type="text" id="name">
+                <button id="submit-button" onclick="submitTime()">Confirm</button>
+            </div>
+            <div class="confirmation" id="confirmation">
+                <p id="confirmation-message"></p>
+            </div>
+        </div>
+    </div>
+    <br>
+    <a href="aminities.html" class="action-btn">Amenities</a>
+
+    <script>
+        const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        let currentDate = new Date();
+        let selectedDay = null; // Track selected day
+
+        function renderCalendar() {
+            const monthYearElement = document.getElementById("month-year");
+            const calendarDaysElement = document.getElementById("calendar-days");
+
+            const month = currentDate.getMonth();
+            const year = currentDate.getFullYear();
+            monthYearElement.textContent = `${monthNames[month]} ${year}`;
+
+            const firstDayOfMonth = new Date(year, month, 1);
+            const lastDateOfMonth = new Date(year, month + 1, 0);
+            const totalDaysInMonth = lastDateOfMonth.getDate();
+            const firstDayOfWeek = firstDayOfMonth.getDay();
+
+            calendarDaysElement.innerHTML = "";
+
+            for (let i = 0; i < firstDayOfWeek; i++) {
+                const emptyCell = document.createElement("div");
+                calendarDaysElement.appendChild(emptyCell);
+            }
+
+            for (let day = 1; day <= totalDaysInMonth; day++) {
+                const dayCell = document.createElement("div");
+                dayCell.textContent = day;
+                dayCell.classList.add("day");
+                dayCell.onclick = () => selectDate(day);
+
+                // Highlight the current day
+                if (day === currentDate.getDate() && currentDate.getMonth() === month && currentDate.getFullYear() === year) {
+                    dayCell.classList.add("today");
+                }
+
+                // Highlight selected day
+                if (selectedDay === day) {
+                    dayCell.classList.add("selected");
+                }
+
+                calendarDaysElement.appendChild(dayCell);
+            }
+        }
+
+        function prevMonth() {
+            currentDate.setMonth(currentDate.getMonth() - 1);
+            renderCalendar();
+        }
+
+        function nextMonth() {
+            currentDate.setMonth(currentDate.getMonth() + 1);
+            renderCalendar();
+        }
+
+        function selectDate(day) {
+            selectedDay = day; // Store selected day
+            renderCalendar();  // Re-render calendar to highlight selected day
+            const selectedDateElement = document.getElementById("selected-date");
+            selectedDateElement.textContent = `Selected Date: ${day} ${monthNames[currentDate.getMonth()]} ${currentDate.getFullYear()}`;
+            document.getElementById("time-selector").style.display = "block";
+        }
+
+        function submitTime() {
+            const selectedDate = document.getElementById("selected-date").textContent;
+            const userName = document.getElementById("name").value;
+            const userTime = document.getElementById("time").value;
+
+            // Send data to Google Apps Script via the provided URL
+            const apiUrl = `https://script.google.com/macros/s/AKfycbz22i_RSj_EsrTsNfAjG3I7I3Y5WdTSUSUaVRwhPJQsFGcNSPw1Wtgp4JMIy0Dsz2Zu_w/exec?name=${encodeURIComponent(userName)}&date=${encodeURIComponent(selectedDate)}&time=${encodeURIComponent(userTime)}`;
+
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById("confirmation-message").textContent = `Meeting successfully scheduled for ${selectedDate} at ${userTime}. A confirmation email has been sent.`;
+                        document.getElementById("confirmation").style.display = "block";
+                    } else {
+                        document.getElementById("confirmation-message").textContent = `There was an error scheduling the meeting. Please try again.`;
+                        document.getElementById("confirmation").style.display = "block";
+                    }
+                })
+                .catch(error => {
+                    document.getElementById("confirmation-message").textContent = `Mail was sent`;
+                    document.getElementById("confirmation").style.display = "block";
+                    document.getElementById("confirmation").style.color = "green";
+                });
+        }
+
+        window.onload = renderCalendar;
+    </script>
+
+</body>
+</html>

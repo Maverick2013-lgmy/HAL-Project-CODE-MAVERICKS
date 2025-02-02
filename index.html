@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <link border-radius rel="icon" type="image/x-icon" href="OSPROlogo.png">
+    <style>
+        a{
+            color: #5A2CAB;
+            text-decoration: none;
+            
+        }
+        a:hover{
+            color: #5A2CAB;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+        .login-container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        input {
+            padding: 10px;
+            margin: 10px 0;
+            width: 90%;
+        }
+        button {
+            padding: 10px;
+            background: #8A56E7;
+            color: white;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+        }
+        button:hover {
+            background: #5A2CAB;
+        }
+        .logo {
+    width: 100px;  /* Adjust size as needed */
+    height: 100px; /* Ensure it's a perfect square */
+    border-radius: 50%; /* Makes it round */
+    border: 3px solid #8A56E7; /* Adds a border (change color as needed) */
+    display:inline-block;
+    justify-content: center; /* Center horizontally */
+    align-items: center;
+}
+.nav-container {
+    display: flex;
+  justify-content: space-between; /* Puts "About" on the left and "Contact" on the right */
+    align-items: center;
+  width: 100%; /* Ensures it spans the full width */
+}
+
+.left, .right {
+  margin: 0; /* Removes default paragraph margins */
+}
+
+
+    </style>
+</head>
+<body>
+    <div style="margin: auto;" class="login-container">
+        <img class="logo" src="OSPROlogo.png" alt="OSPRO Logo" width="100">
+        <br>
+        <br>
+        <img src="OSPROname.png" alt="OSPRO" width="100">
+        <h2 style="margin: 10px;">Login</h2>
+        <input type="text" id="idNumber" placeholder="Enter ID Number">
+        <button onclick="login()">Login</button>
+        <p><a href="sign_up.html" style="margin: 10px;">Sign up</a></p>
+        <div class="nav-container">
+            <a href="about.html" class="left">About</a>
+            <a href="contactus.html" class="right">Contact</a>
+        </div>    
+    <script>
+        function login() 
+        {
+            var idNumber = document.getElementById("idNumber").value;
+            if (idNumber.trim() !== "") {
+                window.location.href = "welcome.html?id=" + encodeURIComponent(idNumber);
+            } 
+            else {
+                alert("Please enter an ID number");
+            }
+        }
+    </script>
+</body>
+</html>

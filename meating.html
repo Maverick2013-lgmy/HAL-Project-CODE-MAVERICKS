@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invite Attendees</title>
+    <link border-radius rel="icon" type="image/x-icon" href="OSPROlogo.png">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 300px; /* Fixed width for the container */
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            box-sizing: border-box; /* Ensure padding is included in the width */
+        }
+        button {
+            width: 100%; /* Make the button the same width as the input box */
+            padding: 10px;
+            background-color: #8A56E7;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            box-sizing: border-box; /* Ensure padding is included in the width */
+        }
+        button:hover {
+            background-color: #5A2CAB;
+        }
+        .message {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>INVITE ATTENDEES</h1>
+        <form id="inviteForm">
+            <input type="text" id="name" placeholder="Enter Name" required>
+            <button type="submit">Send Invitation</button>
+        </form>
+        <p id="message" class="message"></p>
+    </div>
+
+    <script>
+        document.getElementById('inviteForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent the form from submitting normally
+
+            const name = document.getElementById('name').value; // Get the name from the input field
+            const scriptURL = `https://script.google.com/macros/s/AKfycbz22i_RSj_EsrTsNfAjG3I7I3Y5WdTSUSUaVRwhPJQsFGcNSPw1Wtgp4JMIy0Dsz2Zu_w/exec?name=${encodeURIComponent(name)}`;
+
+            fetch(scriptURL)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.json(); // Parse the response as JSON
+                })
+                .then(data => {
+                    console.log(data); // Log the response data for debugging
+                    if (data.success) {
+                        document.getElementById('message').textContent = `Failed to send the invitation. Please try again.`;
+                        document.getElementById('message').style.color = "red";
+                    } else {
+                        document.getElementById('message').textContent = `Error: ${data.message}`;
+                        document.getElementById('message').style.color = "red";
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error); // Log the error for debugging
+                    document.getElementById('message').textContent = 'Invitation sent succesfully';
+                    document.getElementById('message').style.color = "green";
+                });
+        });
+    </script>
+</body>
+</html>

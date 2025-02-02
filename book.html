@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OSPRO - Confirm Booking</title>
+    <link rel="icon" type="image/x-icon" href="OSPROlogo.png">
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding-top: 80px; /* Space for fixed header */
+        }
+
+        /* Header Styles */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 10%;
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            position: fixed;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header .menu {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+        }
+
+        .header .menu a {
+            text-decoration: none;
+            color: #333;
+            font-size: 16px;
+            transition: color 0.3s ease;
+        }
+
+        .header .menu a:hover {
+            color: #5A2CAB;
+        }
+
+        .header .login-btn {
+            padding: 10px 20px;
+            background-color: #6b47c7;
+            color: #ffffff;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        .header .login-btn:hover {
+            background-color: #5A2CAB;
+        }
+
+        /* Main Content Styles */
+        .main-container {
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .main-content {
+            text-align: center;
+            padding: 40px;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
+            width: 90%;
+            max-width: 800px;
+            min-height: 60vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .main-content h1 {
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+
+        .main-content .booking-details {
+            margin-bottom: 20px;
+        }
+
+        .main-content .booking-details p {
+            font-size: 22px;
+            margin: 15px 0;
+        }
+
+        .main-content .confirm-btn {
+            padding: 15px 30px;
+            background-color: #28a745;
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        .main-content .confirm-btn:hover {
+            background-color: #218838;
+        }
+
+        /* Footer Styles */
+        .footer {
+            padding: 20px;
+            text-align: center;
+            background-color: #ffffff;
+            border-top: 1px solid #ccc;
+            width: 100%;
+        }
+
+        .footer .footer-links {
+            margin-bottom: 10px;
+        }
+
+        .footer .footer-links a {
+            margin: 0 10px;
+            text-decoration: none;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .footer .footer-links a:hover {
+            color: #5A2CAB;
+        }
+
+        .footer .social-icons {
+            margin-top: 10px;
+        }
+
+        .footer .social-icons a {
+            margin: 0 5px;
+            text-decoration: none;
+            color: #333;
+            font-size: 18px;
+        }
+
+        .footer .social-icons a:hover {
+            color: #5A2CAB;
+        }
+
+        .footer .made-in {
+            margin-top: 10px;
+            font-size: 12px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <img src="img_logo.png" alt="OSPRO Logo" style="width: 150px; height: auto; margin-left: 20px;">
+        <nav>
+            <ul class="menu">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Features</a></li>
+                <li><a href="#">Pricing</a></li>
+                <li><a href="#">FAQs</a></li>
+                <li><a href="#">Advantages</a></li>
+            </ul>
+        </nav>
+        <a href="#" class="login-btn">Login</a>
+    </header>
+
+    <!-- Main Content -->
+    <div class="main-container">
+        <div class="main-content">
+            <h1>CONFIRM BOOKING</h1>
+            <div class="booking-details">
+                <p><strong>FLOOR 1</strong></p>
+                <p><strong>SEAT A2</strong></p>
+                <p><strong>9:00 AM - 6:00 PM</strong></p>
+                <p><strong>Kayla Ray</strong></p>
+            </div>
+            <button class="confirm-btn">Confirm Booking</button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms & Conditions</a>
+        </div>
+        <div class="social-icons">
+            <a href="#">Facebook</a>
+            <a href="#">Twitter</a>
+            <a href="#">LinkedIn</a>
+        </div>
+        <div class="made-in">Made in India</div>
+    </footer>
+</body>
+</html>

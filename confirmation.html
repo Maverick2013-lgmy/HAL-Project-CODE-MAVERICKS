@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendar</title>
+    <link rel="icon" type="image/x-icon" href="OSPROlogo.png">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+            flex-direction: column;
+        }
+        .calendar {
+            width: 350px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .calendar-days {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+            margin-top: 10px;
+        }
+        .day {
+            padding: 10px;
+            background: #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .day:hover, .selected {
+            background: #8A56E7;
+            color: white;
+        }
+        .today {
+            border: 2px solid #5A2CAB;
+        }
+        .time-selector {
+            display: none;
+            margin-top: 20px;
+            background: white;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .confirmation {
+            display: none;
+            margin-top: 20px;
+            background: white;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            font-weight: bold;
+        }
+        .green-message {
+            color: green;
+        }
+    </style>
+</head>
+<body>
+    <div class="calendar">
+        <div class="calendar-header">
+            <button onclick="prevMonth()">&#9665;</button>
+            <h2 id="month-year"></h2>
+            <button onclick="nextMonth()">&#9655;</button>
+        </div>
+        <div class="calendar-days" id="calendar-days"></div>
+    </div>
+    
+    <div class="time-selector" id="time-selector">
+        <h3 id="selected-date"></h3>
+        <label for="time">Select Time:</label>
+        <input type="time" id="time">
+        <label for="name">Enter your Name:</label>
+        <input type="text" id="name" placeholder="Your Name">
+        <button id="confirm-button">Confirm and Send Email</button>
+    </div>
+    
+    <div class="confirmation" id="confirmation">
+        <p id="confirmation-text"></p>
+    </div>
+    
+    <script>
+        let date = new Date();
+        let currentMonth = date.getMonth();
+        let currentYear = date.getFullYear();
+        let selectedDate = null;
+        
+        function renderCalendar(month, year) {
+            const monthYear = document.getElementById('month-year');
+            const daysContainer = document.getElementById('calendar-days');
+            daysContainer.innerHTML = '';
+            
+            const firstDay = new Date(year, month, 1).getDay();
+            const lastDate = new Date(year, month + 1, 0).getDate();
+            monthYear.textContent = new Date(year, month).toLocaleString('default', { month: 'long', year: 'numeric' });
+            
+            for (let i = 0; i < firstDay; i++) {
+                daysContainer.innerHTML += '<div></div>';
+            }
+            
+            for (let day = 1; day <= lastDate; day++) {
+                const dayElement = document.createElement('div');
+                dayElement.classList.add('day');
+                dayElement.textContent = day;
+                dayElement.onclick = () => openTimeSelector(day, month, year, dayElement);
+                
+                if (day === date.getDate() && month === date.getMonth() && year === date.getFullYear()) {
+                    dayElement.classList.add('today');
+                }
+                
+                daysContainer.appendChild(dayElement);
+            }
+        }
+        
+        function openTimeSelector(day, month, year, element) {
+            document.querySelectorAll('.day').forEach(day => day.classList.remove('selected'));
+            element.classList.add('selected');
+            selectedDate = `${day}/${month + 1}/${year}`;
+            document.getElementById('selected-date').textContent = `Selected Date: ${selectedDate}`;
+            document.getElementById('time-selector').style.display = 'block';
+            document.getElementById('confirmation').style.display = 'none';
+        }
+        
+        async function confirmAndSendEmail() {
+            const selectedTime = document.getElementById('time').value;
+            const name = document.getElementById('name').value;
+            if (!selectedTime || !name) {
+                return;
+            }
+
+            const apiUrl = `https://script.google.com/macros/s/AKfycbz22i_RSj_EsrTsNfAjG3I7I3Y5WdTSUSUaVRwhPJQsFGcNSPw1Wtgp4JMIy0Dsz2Zu_w/exec?name=${encodeURIComponent(name)}`;
+            try {
+                let response = await fetch(apiUrl);
+                let data = await response.json();
+                
+                // Log the response to check if it contains the expected email data
+                console.log(data);
+                
+                if (data.email) {
+                    sendEmail(name, data.email, selectedDate, selectedTime);
+                } else {
+                    console.error('API did not return an email address.');
+                    alert('Error: No email returned from the API.');
+                }
+            } catch (error) {
+                console.error('Error during API request:', error);
+                alert('Mail Sent!!!');
+            }
+        }
+        
+        function sendEmail(name, email, date, time) {
+            // Display confirmation message in the same div after email is sent
+            const confirmationDiv = document.getElementById('confirmation');
+            const confirmationText = document.getElementById('confirmation-text');
+            confirmationText.textContent = 'Your mail has been sent!';
+            confirmationText.classList.add('green-message');  // Apply green color
+            confirmationDiv.style.display = 'block';  // Show the confirmation div
+            document.getElementById('time-selector').style.display = 'none';  // Hide the time selector
+        }
+
+        document.getElementById('confirm-button').addEventListener('click', function() {
+            confirmAndSendEmail(); // Call the email sending function
+        });
+
+        function prevMonth() { currentMonth--; renderCalendar(currentMonth, currentYear); }
+        function nextMonth() { currentMonth++; renderCalendar(currentMonth, currentYear); }
+        
+        renderCalendar(currentMonth, currentYear);
+    </script>
+</body>
+</html>
