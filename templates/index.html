@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YOLOv7 Object Detection</title>
+    <style>
+        body { text-align: center; font-family: Arial, sans-serif; }
+        h2 { margin-top: 20px; }
+        button { padding: 10px 20px; font-size: 18px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h2>Live Object Detection</h2>
+    <button onclick="startCamera()">Start Camera</button>
+    <br><br>
+    <img id="videoFeed" src="" width="640" height="480">
+
+    <script>
+        function startCamera() {
+            document.getElementById("videoFeed").src = "/video_feed";
+        }
+    </script>
+</body>
+</html>
